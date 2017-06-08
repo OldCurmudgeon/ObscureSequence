@@ -3,7 +3,7 @@ package obscuresequence;
 import java.math.BigInteger;
 
 /**
- * Completely unobscured sequence - 1 ...
+ * Completely unobscured sequence - 1, 2, 3, ...
  *
  * Used for testing - probably of no other use.
  */

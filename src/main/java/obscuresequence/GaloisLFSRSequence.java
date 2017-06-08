@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * A simple Galois LFSR.
@@ -56,6 +57,17 @@ public class GaloisLFSRSequence extends ObscureSequence {
     public GaloisLFSRSequence(int bits, BigInteger start) {
         // Default to my taps.
         this(defaultTaps.get(bits), start);
+    }
+
+    public GaloisLFSRSequence(Integer[] taps) {
+        // Default to start at 1.
+        this(taps,BigInteger.ONE);
+    }
+
+
+    public GaloisLFSRSequence(int... taps) {
+        // Box the array.
+        this(IntStream.of(taps).boxed().toArray(Integer[]::new));
     }
 
     public GaloisLFSRSequence(int bits) {
