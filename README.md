@@ -49,11 +49,12 @@ A simple 3-bit sequence with different taps:
 
 A base sequence can be manipulated by a number of techniques that preserve that uniqueness while adding obscurity. 
 
+---
 #### Obscure Bit
 
 This allows you to split an MLS of `n` bits into `n` MLS's of width `n-1`.
   
-If you take an MLS and pick one bit and perform the following changes to it:
+If you take an MLS, pick one bit and perform the following changes to it:
 
 1. If the specified bit is a `0`, discard the value.
 2. If the specified bit is a `1`, remove that bit from the value.
@@ -70,7 +71,7 @@ This trick was inspired by the realisation that with a normal LFSR, any even num
                     "The base 4-bit sequence");
 
             printSequence(new GaloisLFSRSequence(4).obscureBit(0),
-                    "A 3-bit sequence generated from a 4-bit sequence with even numbers discarded and the lowest bit removed");
+                    "A 3-bit sequence generated from the 4-bit sequence with even numbers discarded and the lowest bit removed");
         }
     }
 ```
@@ -78,13 +79,15 @@ This trick was inspired by the realisation that with a normal LFSR, any even num
 ```
 The base 4-bit sequence:
 1 12 6 3 13 10 5 14 7 15 11 9 8 4 2 
-A 3-bit sequence generated from a 4-bit sequence with even numbers discarded and the lowest bit removed:
+A 3-bit sequence generated from the 4-bit sequence with even numbers discarded and the lowest bit removed:
 0 1 6 2 3 7 5 4 
 ```
 
-Interestingly, an LFSR will never generate the value `0` but passing it through the `obscureBit` filter can result in `0` in the sequence.
+Interestingly, an LFSR will never generate the value `0` but passing it through the `obscureBit` filter can produce a `0` in the sequence.
 
+---
 #### Slicing
+
 
 This method slices the sequence into runs. This allows one sequence to be partitioned into sub-sequences that can then run independently, even remote from each other, without any sequence repeating a value from **any other slice**.
 
@@ -132,7 +135,12 @@ Slice 7:
 95 79 71 67 65 64 32 16 8 4 2 1 96 48 24 12 6 3 97 80 40 20 10 5 98 49 120 60 30 15 103 83 73 68 34 17 104 52 26 13 102 51 121 92 46 23 107 85 74 37 114 57 124 62 31 
 ```
 
-Obviously the lengths of these sequences vary but wider sequences this should not be a significant issue.
+Obviously the lengths of these sequences vary but with wider sequences this should not be a significant issue.
+
+---
+#### Staggering (work in progress)
+
+This method reorders the output of the sequence using permutations.
 
 ---
 <a name="obscure"><sup>&dagger;</sup></a> Here I mean *obscure* as in *difficult to discern* rather than *weird*.

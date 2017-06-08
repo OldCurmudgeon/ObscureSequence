@@ -28,7 +28,7 @@ public class ObscureSequenceDemo {
                     "The base 4-bit sequence");
 
             printSequence(new GaloisLFSRSequence(4).obscureBit(0),
-                    "A 3-bit sequence generated from a 4-bit sequence with even numbers discarded and the lowest bit removed");
+                    "A 3-bit sequence generated from the 4-bit sequence with even numbers discarded and the lowest bit removed");
         }
     }
 
