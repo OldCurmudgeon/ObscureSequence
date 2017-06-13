@@ -22,6 +22,8 @@ package obscuresequence;
  * Some demonstrations of obscure sequences.
  */
 public class ObscureSequenceDemo {
+
+    // Runs all demos.
     public static void main(String[] args) {
         for (Demo demo : Demo.values()) {
             demo.run();
@@ -77,25 +79,24 @@ public class ObscureSequenceDemo {
         Demo1024BitSequence {
             @Override
             public void run() {
-                ObscureSequence s = new GaloisLFSRSequence(1024).obscureBit(0).stagger(10);
-                // Consume some
-                for (int i = 0; i < Integer.MAX_VALUE / 16384; i++) {
-                    s.next();
-                }
-                printSequence(s, "1024 bit sequence with bit(0) obscured and staggered", 16, 10, "\n");
+                ObscureSequence s = new GaloisLFSRSequence(1024)
+                        .obscureBit(0)
+                        .stagger(10)
+                        .discard(Integer.MAX_VALUE / 16384)
+                        .limit(10);
+                printSequence(s, "1024 bit sequence with bit(0) obscured and staggered", 16, "\n");
             }
 
         }
     }
 
     private static void printSequence(ObscureSequence sequence, String description) {
-        printSequence(sequence, description, 10, 0, " ");
+        printSequence(sequence, description, 10, " ");
     }
 
-    private static void printSequence(ObscureSequence sequence, String description, int radix, int limit, String between) {
+    private static void printSequence(ObscureSequence sequence, String description, int radix, String between) {
         System.out.println(description + ":");
-        int count = 0;
-        while (sequence.hasNext() && (limit == 0 || count++ < limit)) {
+        while (sequence.hasNext()) {
             System.out.print(sequence.next().toString(radix) + between);
         }
         System.out.println();

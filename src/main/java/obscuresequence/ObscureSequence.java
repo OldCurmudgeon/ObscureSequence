@@ -109,6 +109,12 @@ public abstract class ObscureSequence extends Sequence {
         return this;
     }
 
+    /**
+     * Limit the sequence to a specific length.
+     *
+     * @param limit - how many to allow.
+     * @return a limited iterator of the specified length.
+     */
     public ObscureSequence limit(int limit) {
         final ObscureSequence source = this;
 
