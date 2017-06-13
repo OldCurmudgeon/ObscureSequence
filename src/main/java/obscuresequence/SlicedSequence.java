@@ -96,7 +96,7 @@ public class SlicedSequence implements Iterable<ObscureSequence> {
      * @param m - The position in the lexicographic sequence
      * @return the m'th (n, k)
      */
-    public static BigInteger combinadic(int n, int k, BigInteger m) {
+    private static BigInteger combinadic(int n, int k, BigInteger m) {
         BigInteger out = BigInteger.ZERO;
         for (; n > 0; n--) {
             BigInteger y = nChooseK(n - 1, k);
@@ -118,7 +118,7 @@ public class SlicedSequence implements Iterable<ObscureSequence> {
      * @param k - How many bits must be set.
      * @return the value of (n,k)
      */
-    public static BigInteger nChooseK(int n, int k) {
+    private static BigInteger nChooseK(int n, int k) {
         if (k > n) {
             return BigInteger.ZERO;
         }

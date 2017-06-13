@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 /**
  * The word Obscure here denotes "difficult to predict" rather than "weird".
+ *
+ * TODO: Add a `stagger()` method.
  */
 public abstract class ObscureSequence extends Sequence {
 

@@ -6,8 +6,9 @@ package obscuresequence;
 public class ObscureSequenceDemo {
     public static void main(String[] args) {
         new DemoSimpleSequence().run();
-        new DemoSplitBit().run();
+        new DemoObscureBit().run();
         new DemoSlicedSequence().run();
+        new DemoStaggeredSequence().run();
     }
 
     static class DemoSimpleSequence {
@@ -21,7 +22,7 @@ public class ObscureSequenceDemo {
         }
     }
 
-    static class DemoSplitBit {
+    static class DemoObscureBit {
 
         void run() {
             printSequence(new GaloisLFSRSequence(4),
@@ -45,10 +46,19 @@ public class ObscureSequenceDemo {
             // Slice it up. Note that a SlicedSequence is an Iterable<ObscureSequence>.
             for (ObscureSequence slice : new SlicedSequence(n, k)) {
                 printSequence(slice,
-                        "Slice "+(count++));
+                        "Slice " + (count++));
             }
         }
     }
+
+    static class DemoStaggeredSequence {
+
+        void run() {
+            printSequence(new StaggeredSequence(new PlainSequence(4), 867),
+                    "Plain sequence staggered by [5,4,3,2,1,0]");
+        }
+    }
+
 
     private static void printSequence(ObscureSequence sequence, String description) {
         System.out.println(description + ":");
