@@ -166,7 +166,7 @@ This technique reorders the output of the sequence using permutations.
     static class DemoStaggeredSequence {
 
         void run() {
-            printSequence(new StaggeredSequence(new PlainSequence(4), 867),
+            printSequence(new PlainSequence(4).stagger(867),
                     "Plain sequence staggered by [5,4,3,2,1,0]");
         }
     }

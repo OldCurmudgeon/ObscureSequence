@@ -4,8 +4,6 @@ import java.math.BigInteger;
 
 /**
  * The word Obscure here denotes "difficult to predict" rather than "weird".
- *
- * TODO: Add a `stagger()` method.
  */
 public abstract class ObscureSequence extends Sequence {
 
@@ -93,5 +91,14 @@ public abstract class ObscureSequence extends Sequence {
         };
     }
 
+    /**
+     * Shortcut to add stagger.
+     *
+     * @param permutation - The permutation to use.
+     * @return my sequence staggered.
+     */
+    public ObscureSequence stagger(int permutation) {
+        return new StaggeredSequence(this, permutation);
+    }
 
 }
