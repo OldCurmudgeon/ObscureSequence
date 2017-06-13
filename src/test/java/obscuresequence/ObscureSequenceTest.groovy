@@ -24,10 +24,10 @@ import spock.lang.Specification
 /**
  * Test the GaloisLFSRSequence
  */
-class GaloisLFSRTest extends Specification {
+class ObscureSequenceTest extends Specification {
     // Sequence expected from a 3-bit LFSR using the default taps.
     @Shared
-            correct3BitLFSRSequence = [1, 6, 3, 7, 5, 4, 2]
+    List<BigInteger> correct3BitLFSRSequence = [1, 6, 3, 7, 5, 4, 2]
 
     def "Test a simple 3-bit tap"() {
         given: "the default 3-bit tap"
@@ -37,23 +37,12 @@ class GaloisLFSRTest extends Specification {
         def seq = lfsr.toList()
 
         then: "known expected values"
-        seq.equals(correct3BitLFSRSequence)
-    }
-
-    def "Test a simple 3-bit tap created by the factory"() {
-        given: "the default 3-bit tap"
-        def lfsr = ObscureSequence.create(ObscureSequence.Type.GaloisLFSR, 3)
-
-        when: "enumerated"
-        def seq = lfsr.toList()
-
-        then: "known expected values"
-        seq.equals(correct3BitLFSRSequence)
+        seq == correct3BitLFSRSequence
     }
 
     def "Test the obscureBit() method"() {
         expect:
-        new GaloisLFSRSequence(3).obscureBit(b).toList().equals(r)
+        new GaloisLFSRSequence(3).obscureBit(b).toList() == r
 
         where:
         b || r
@@ -64,5 +53,27 @@ class GaloisLFSRTest extends Specification {
 
     }
 
+    def "Test the stagger() method"() {
+        expect:
+        new GaloisLFSRSequence(3).stagger(10).toList() == [1, 7, 6, 3, 5, 4, 2]
 
+    }
+
+    def "Test a SlicedSequence"() {
+        expect:
+        new SlicedSequence(7, 6).iterator().next().toList() == [63, 127]
+    }
+
+    def "Test a big sequence"() {
+        given: "a wide sequence hacked about and partially consumed"
+        def lfsr = new GaloisLFSRSequence(1024)
+                .obscureBit(0)
+                .obscureBit(4)
+                .stagger(10)
+                .discard(1000)
+                .limit(10)
+
+        expect:
+        ++lfsr == 617440762262617418585766818484820182577022890014279742717383810444882676814328808944769111050137324869633402418590349700869216854833244323110477477213712577353067678261559775466667758063076190042598947291844664946973037982406098018575391433553059591944758169277528651358043825561461750911952991500079079410
+    }
 }

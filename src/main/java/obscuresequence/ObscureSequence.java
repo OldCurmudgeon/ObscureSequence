@@ -19,35 +19,12 @@
 package obscuresequence;
 
 import java.math.BigInteger;
+import java.util.Iterator;
 
 /**
  * The word Obscure here denotes "difficult to predict" rather than "weird".
  */
 public abstract class ObscureSequence extends Sequence {
-
-    /**
-     * TODO: This is probably redundant.
-     */
-    enum Type {
-        GaloisLFSR {
-            ObscureSequence create(int bits) {
-                return new GaloisLFSRSequence(bits);
-            }
-        };
-
-        abstract ObscureSequence create(int bits);
-    }
-
-    /**
-     * Create a sequence of the specified type.
-     *
-     * @param type - One of the Types enum.
-     * @param bits - How many bits wide.
-     * @return the specified sequence.
-     */
-    static ObscureSequence create(Type type, int bits) {
-        return type.create(bits);
-    }
 
     /**
      * Obscure one bit by:
@@ -117,6 +94,41 @@ public abstract class ObscureSequence extends Sequence {
      */
     public ObscureSequence stagger(int permutation) {
         return new StaggeredSequence(this, permutation);
+    }
+
+    /**
+     * Discard some.
+     *
+     * @param n - How many to discard.
+     * @return the same sequence.
+     */
+    public ObscureSequence discard(Integer n) {
+        for (int i = 0; i < n; i++) {
+            next();
+        }
+        return this;
+    }
+
+    public ObscureSequence limit(int limit) {
+        final ObscureSequence source = this;
+
+        return new ObscureSequence() {
+            int count = 0;
+
+            @Override
+            public boolean hasNext() {
+                return source.hasNext() && count < limit;
+            }
+
+            @Override
+            public BigInteger next() {
+                if ( hasNext() ) {
+                    count += 1;
+                    return source.next();
+                }
+                return null;
+            }
+        };
     }
 
 }

@@ -23,65 +23,80 @@ package obscuresequence;
  */
 public class ObscureSequenceDemo {
     public static void main(String[] args) {
-        new DemoSimpleSequence().run();
-        new DemoObscureBit().run();
-        new DemoSlicedSequence().run();
-        new DemoStaggeredSequence().run();
-    }
-
-    static class DemoSimpleSequence {
-
-        void run() {
-            printSequence(new GaloisLFSRSequence(3),
-                    "A simple 3-bit sequence with default taps");
-
-            printSequence(new GaloisLFSRSequence(3, 1),
-                    "A simple 3-bit sequence with different taps");
+        for (Demo demo : Demo.values()) {
+            demo.run();
         }
     }
 
-    static class DemoObscureBit {
+    enum Demo implements Runnable {
+        DemoSimpleSequence {
+            @Override
+            public void run() {
+                printSequence(new GaloisLFSRSequence(3),
+                        "A simple 3-bit sequence with default taps");
 
-        void run() {
-            printSequence(new GaloisLFSRSequence(4),
-                    "The base 4-bit sequence");
-
-            printSequence(new GaloisLFSRSequence(4).obscureBit(0),
-                    "A 3-bit sequence generated from the 4-bit sequence with even numbers discarded and the lowest bit removed");
-        }
-    }
-
-    static class DemoSlicedSequence {
-        // The width of the sequences.
-        final int n = 7;
-        // Start/stop at positions in the sequence that have just 6 bits set.
-        final int k = 6;
-
-        void run() {
-            printSequence(new GaloisLFSRSequence(n),
-                    "The base 7-bit sequence");
-            int count = 1;
-            // Slice it up. Note that a SlicedSequence is an Iterable<ObscureSequence>.
-            for (ObscureSequence slice : new SlicedSequence(n, k)) {
-                printSequence(slice,
-                        "Slice " + (count++));
+                printSequence(new GaloisLFSRSequence(3, 1),
+                        "A simple 3-bit sequence with different taps");
             }
+        },
+        DemoObscureBit {
+            @Override
+            public void run() {
+                printSequence(new GaloisLFSRSequence(4),
+                        "The base 4-bit sequence");
+
+                printSequence(new GaloisLFSRSequence(4).obscureBit(0),
+                        "A 3-bit sequence generated from the 4-bit sequence with even numbers discarded and the lowest bit removed");
+            }
+        },
+        DemoSlicedSequence {
+            // The width of the sequences.
+            final int n = 7;
+            // Start/stop at positions in the sequence that have just 6 bits set.
+            final int k = 6;
+
+            @Override
+            public void run() {
+                printSequence(new GaloisLFSRSequence(n),
+                        "The base 7-bit sequence");
+                int count = 1;
+                // Slice it up. Note that a SlicedSequence is an Iterable<ObscureSequence>.
+                for (ObscureSequence slice : new SlicedSequence(n, k)) {
+                    printSequence(slice,
+                            "Slice " + (count++));
+                }
+            }
+        },
+        DemoStaggeredSequence {
+            @Override
+            public void run() {
+                printSequence(new PlainSequence(4).stagger(867),
+                        "Plain sequence staggered by [5,4,3,2,1,0]");
+            }
+        },
+        Demo1024BitSequence {
+            @Override
+            public void run() {
+                ObscureSequence s = new GaloisLFSRSequence(1024).obscureBit(0).stagger(10);
+                // Consume some
+                for (int i = 0; i < Integer.MAX_VALUE / 16384; i++) {
+                    s.next();
+                }
+                printSequence(s, "1024 bit sequence with bit(0) obscured and staggered", 16, 10, "\n");
+            }
+
         }
     }
-
-    static class DemoStaggeredSequence {
-
-        void run() {
-            printSequence(new PlainSequence(4).stagger(867),
-                    "Plain sequence staggered by [5,4,3,2,1,0]");
-        }
-    }
-
 
     private static void printSequence(ObscureSequence sequence, String description) {
+        printSequence(sequence, description, 10, 0, " ");
+    }
+
+    private static void printSequence(ObscureSequence sequence, String description, int radix, int limit, String between) {
         System.out.println(description + ":");
-        while (sequence.hasNext()) {
-            System.out.print(sequence.next() + " ");
+        int count = 0;
+        while (sequence.hasNext() && (limit == 0 || count++ < limit)) {
+            System.out.print(sequence.next().toString(radix) + between);
         }
         System.out.println();
     }

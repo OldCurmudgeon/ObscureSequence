@@ -55,6 +55,9 @@ public class GaloisLFSRSequence extends ObscureSequence {
     private BigInteger next = null;
 
     public GaloisLFSRSequence(Integer[] taps, BigInteger start, int stopBits) {
+        if ( taps == null ) {
+            throw new IllegalArgumentException("No taps provided!");
+        }
         // Keep track of the width.
         this.n = taps[0];
         // Begin and continue from the specified start value.

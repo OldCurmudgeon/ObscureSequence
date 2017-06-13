@@ -33,7 +33,7 @@ public class StaggeredSequence extends ObscureSequence {
     /**
      * Staggers the source sequence using the specified permutation.
      *
-     * The specified permutation just picks a permutation behing the scenes.
+     * The specified permutation just picks a permutation behind the scenes.
      *
      * @param source      - The sequence to permute.
      * @param permutation - Which permutation to use.
